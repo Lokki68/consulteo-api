@@ -45,6 +45,7 @@
     <orderEntry type="library" scope="PROVIDED" name="argon2-kdf (v1.0.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ast (v2.4.3, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="base64 (v0.3.0, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bcrypt (v3.1.22, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bcrypt_pbkdf (v1.1.2, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bigdecimal (v4.1.2, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="blind_index (v2.8.1, mise: 4.0.6) [gem]" level="application" />
@@ -59,9 +60,14 @@
     <orderEntry type="library" scope="TEST" name="database_cleaner-active_record (v2.2.2, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="database_cleaner-core (v2.1.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="date (v3.5.1, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="devise (v5.0.4, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="devise-jwt (v0.13.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="diff-lcs (v1.6.2, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="dotenv (v3.2.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="drb (v2.2.3, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="dry-auto_inject (v1.2.1, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="dry-configurable (v1.4.0, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="dry-core (v1.2.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ed25519 (v1.4.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erb (v6.0.7, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.13.1, mise: 4.0.6) [gem]" level="application" />
@@ -78,6 +84,7 @@
     <orderEntry type="library" scope="PROVIDED" name="io-console (v0.9.2, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="irb (v1.18.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="json (v3.0.2, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="jwt (v3.3.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="kamal (v2.12.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="language_server-protocol (v3.17.0.6, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="lint_roller (v1.1.0, mise: 4.0.6) [gem]" level="application" />
@@ -100,6 +107,7 @@
     <orderEntry type="library" scope="PROVIDED" name="net-ssh (v7.3.3, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nio4r (v2.7.5, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.19.4, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="orm_adapter (v0.5.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ostruct (v0.6.3, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pagy (v43.6.2, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="paper_trail (v17.0.0, mise: 4.0.6) [gem]" level="application" />
@@ -133,6 +141,7 @@
     <orderEntry type="library" scope="PROVIDED" name="regexp_parser (v2.12.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="reline (v0.7.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="request_store (v1.7.0, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="responders (v3.2.1, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-core (v3.13.6, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-expectations (v3.13.5, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rspec-mocks (v3.13.8, mise: 4.0.6) [gem]" level="application" />
@@ -159,6 +168,8 @@
     <orderEntry type="library" scope="PROVIDED" name="unicode-emoji (v4.2.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="uri (v1.1.1, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="useragent (v0.16.11, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="warden (v1.2.9, mise: 4.0.6) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="warden-jwt_auth (v0.12.0, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-driver (v0.8.2, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, mise: 4.0.6) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="yaml (v0.4.0, mise: 4.0.6) [gem]" level="application" />

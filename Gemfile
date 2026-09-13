@@ -23,7 +23,7 @@ gem "image_processing", "~> 1.2"
 
 # Auth
 gem 'devise'
-gem 'devise-jwt'
+gem 'devise-jwt', require: false
 
 # Authorization
 gem "pundit"
