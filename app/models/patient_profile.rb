@@ -8,7 +8,7 @@ class PatientProfile < ApplicationRecord
   encrypts :social_security_number
   blind_index :social_security_number
 
-  validates :first_name, :last_name, presence: true
+  validates :first_name, :last_name, presence: true, on: :profile_completion
 
   def full_name
     "#{first_name} #{last_name}"

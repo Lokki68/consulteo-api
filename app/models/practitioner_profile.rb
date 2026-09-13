@@ -12,7 +12,8 @@ class PractitionerProfile < ApplicationRecord
 
   enum :sector, { sector_1: 0, sector_2: 1, non_conventionne: 2 }
 
-  validates :first_name, :last_name, presence: true
+  validates :first_name, :last_name, presence: true, on: :profile_completion
+  validates :rpps_number, presence: true, on: :profile_completion, if: -> { verified? }
 
   def full_name
     "Dr. #{first_name} #{last_name}"

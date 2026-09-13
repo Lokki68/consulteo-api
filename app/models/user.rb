@@ -19,6 +19,13 @@ class User < ApplicationRecord
   before_create { self.jti = SecureRandom.uuid }
   after_create :create_associated_profile
 
+  def profile_completed?
+    profile = patient_profile || practitioner_profile
+    return false unless profile
+
+  profile.first_name.present? && profile.last_name.present?
+  end
+
   private
 
   def create_associated_profile
