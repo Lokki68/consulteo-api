@@ -17,6 +17,6 @@ class CreateAvailabilityRules < ActiveRecord::Migration[8.1]
     end
 
     add_index :availability_rules, [ :practitioner_profile_id, :day_of_week ]
-    add_check_contraint :availability_rules, "start_tile < end_time", name: 'start_before_end_check'
+    add_check_constraint :availability_rules, "start_time < end_time", name: 'start_before_end_check'
   end
 end

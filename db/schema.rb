@@ -10,12 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_155350) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_170559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
+
+  create_table "availability_exceptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.time "end_time"
+    t.integer "exception_type", default: 0, null: false
+    t.uuid "practitioner_profile_id", null: false
+    t.string "reason"
+    t.time "start_time"
+    t.datetime "updated_at", null: false
+    t.index ["practitioner_profile_id", "date"], name: "idx_on_practitioner_profile_id_date_1717301765"
+    t.index ["practitioner_profile_id"], name: "index_availability_exceptions_on_practitioner_profile_id"
+  end
+
+  create_table "availability_rules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.integer "day_of_week", null: false
+    t.time "end_time", null: false
+    t.uuid "practitioner_profile_id", null: false
+    t.integer "slot_duration_minutes", default: 30, null: false
+    t.time "start_time", null: false
+    t.datetime "updated_at", null: false
+    t.date "valid_from", null: false
+    t.date "valid_until"
+    t.index ["practitioner_profile_id", "day_of_week"], name: "idx_on_practitioner_profile_id_day_of_week_089954537c"
+    t.index ["practitioner_profile_id"], name: "index_availability_rules_on_practitioner_profile_id"
+    t.check_constraint "start_time < end_time", name: "start_before_end_check"
+  end
 
   create_table "cabinets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "address"
@@ -36,8 +65,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_155350) do
     t.string "city"
     t.datetime "created_at", null: false
     t.date "date_of_birth"
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.float "latitude"
     t.float "longitude"
     t.string "phone_number"
@@ -55,8 +84,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_155350) do
     t.text "bio"
     t.integer "consultation_price_cents"
     t.datetime "created_at", null: false
-    t.string "first_name", null: false
-    t.string "last_name", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.string "rpps_number"
     t.integer "sector", default: 0
     t.datetime "updated_at", null: false
@@ -107,6 +136,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_155350) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "availability_exceptions", "practitioner_profiles"
+  add_foreign_key "availability_rules", "practitioner_profiles"
   add_foreign_key "patient_profiles", "users"
   add_foreign_key "practitioner_profiles", "users"
   add_foreign_key "practitioner_profiles_specialities", "specialities"
