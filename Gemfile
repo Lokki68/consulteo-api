@@ -22,8 +22,8 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # Auth
-gem 'devise'
-gem 'devise-jwt', require: false
+gem "devise", "~> 4.9"
+gem "devise-jwt", "~> 0.12", require: false
 
 # Authorization
 gem "pundit"

@@ -1,5 +1,5 @@
 class PractitionerProfile < ApplicationRecord
-  has_many :availability_rules, depedent: :destroy
+  has_many :availability_rules, dependent: :destroy
   has_many :availability_exceptions, dependent: :destroy
 
   belongs_to :user
