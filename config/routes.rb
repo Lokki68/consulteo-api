@@ -7,6 +7,12 @@ Rails.application.routes.draw do
       },
       defaults: { format: :json }
 
+      resources :practitioners, only: [] do
+        member do
+          get :available_slots
+        end
+      end
+
       namespace :profiles do
         resource :patient_profile, only: [ :show, :update ]
         resource :practitioner_profile, only: [ :show, :update ]

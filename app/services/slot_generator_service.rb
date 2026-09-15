@@ -1,4 +1,6 @@
 class SlotGeneratorService
+  DEFAULT_SLOT_DURATION = 30
+
   Slot = Struct.new(:start_time, :end_time, keyword_init: true)
 
   def initialize(practitioner_profile:, from_date:, to_date:)
@@ -17,20 +19,12 @@ class SlotGeneratorService
 
   private
 
-  def preload_appointments
-  @practitioner_profile.appointments
-    .where.not(status: :cancelled)
-      .where(starts_at: @from_date.beginning_of_day..@to_date.end_of_day)
-      .pluck(:starts_at, :ends_at)
-  end
-
   def slots_for_date(date)
     return [] if closed_on?(date)
 
-    time_ranges = open_exception_range(date).presence || rule_based_ranges(date)
-    return [] if time_ranges.empty?
+    ranges = open_exception_range(date).presence || rule_based_ranges(date)
 
-    raw_slots = time_ranges.flat_map { |range| generate_slots_for_range(date, arnge) }
+    raw_slots = ranges.flat_map { |range| generate_slots_for_range(date, range) }
 
     raw_slots
       .reject { |slot| overlaps_existing_appointment?(slot) }
@@ -60,7 +54,7 @@ class SlotGeneratorService
   end
 
   def default_slot_duration
-    @practitioner_profile.availability_rules.fisrt&.slot_duration_minutes || 30
+    @practitioner_profile.availability_rules.fisrt&.slot_duration_minutes || DEFAULT_SLOT_DURATION
   end
 
   def generate_slots_for_range(date, range)
@@ -79,6 +73,14 @@ class SlotGeneratorService
 
   def combine(date, time)
     Time.zone.local(date.year, date.month, date.day, time.hour, time.min)
+  end
+
+  def preload_appointments
+    @practitioner_profile.appointments
+      .where(scheduled_at: @from_date.beginning_of_day..@to_date.end_of_day)
+      .where.not(status: :cancelled)
+      .pluck(:scheduled_at, :duration)
+      .map { |scheduled_at, duration| [ scheduled_at, scheduled_at + duration.minutes ] }
   end
 
   def overlaps_existing_appointment?(slot)

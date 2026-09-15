@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :appointment do
+  factory :availability do
     
   end
 end

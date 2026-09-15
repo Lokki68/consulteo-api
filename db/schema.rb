@@ -10,12 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_170559) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_15_072552) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
   enable_extension "pgcrypto"
+
+  create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "cancellation_reason"
+    t.datetime "created_at", null: false
+    t.integer "duration", default: 30, null: false
+    t.uuid "patient_profile_id", null: false
+    t.uuid "practitioner_profile_id", null: false
+    t.text "reason"
+    t.datetime "scheduled_at", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["patient_profile_id", "scheduled_at"], name: "index_appointments_on_patient_profile_id_and_scheduled_at"
+    t.index ["patient_profile_id"], name: "index_appointments_on_patient_profile_id"
+    t.index ["practitioner_profile_id", "scheduled_at"], name: "index_appointments_on_practitioner_profile_id_and_scheduled_at"
+    t.index ["practitioner_profile_id"], name: "index_appointments_on_practitioner_profile_id"
+    t.index ["status"], name: "index_appointments_on_status"
+  end
+
+  create_table "availabilities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "day_of_week", null: false
+    t.time "end_time", null: false
+    t.uuid "practitioner_profile_id", null: false
+    t.time "start_time", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practitioner_profile_id", "day_of_week"], name: "idx_on_practitioner_profile_id_day_of_week_e0a6c5aa41"
+    t.index ["practitioner_profile_id"], name: "index_availabilities_on_practitioner_profile_id"
+  end
 
   create_table "availability_exceptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -136,6 +164,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_170559) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "appointments", "patient_profiles"
+  add_foreign_key "appointments", "practitioner_profiles"
+  add_foreign_key "availabilities", "practitioner_profiles"
   add_foreign_key "availability_exceptions", "practitioner_profiles"
   add_foreign_key "availability_rules", "practitioner_profiles"
   add_foreign_key "patient_profiles", "users"
