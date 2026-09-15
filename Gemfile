@@ -19,7 +19,7 @@ gem "kamal", require: false
 
 gem "thruster", require: false
 
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.1"
 
 # Auth
 gem "devise", "~> 4.9"
