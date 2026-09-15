@@ -29,7 +29,7 @@ gem "devise-jwt", "~> 0.12", require: false
 gem "pundit"
 
 # Background Jobs
-gem "sidekiq", "~> 7.0"
+gem "sidekiq", "~> 8.1"
 gem "redis", "~> 5.0"
 
 # Chiffrement des données sensibles
