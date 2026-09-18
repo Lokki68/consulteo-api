@@ -13,14 +13,14 @@ class Appointment < ApplicationRecord
   }
 
   validates :scheduled_at, presence: true
-  validates :duration, presence: true
+  validates :duration, presence: true, numericality: { greater_than: 0 }
   validate :no_overlap_for_practitioner, on: :create
 
   scope :active, -> { where.not(status: :cancelled) }
   scope :on_date, ->(date) { where(scheduled_at: date.beginning_of_day..date.end_of_day) }
 
   def ends_at
-    scheduled_at + duration_minutes.minutes
+    scheduled_at + duration.minutes
   end
 
   private
@@ -31,7 +31,7 @@ class Appointment < ApplicationRecord
     overlapping = practitioner_profile.appointments
                                       .active
                                       .where.not(id: id)
-                                      .where("scheduled_at < ? AND (scheduled_at + (duration || 'minutes')::interval)  > ?", ends_at, scheduled_at)
+                                      .where("scheduled_at < ? AND (scheduled_at + (duration || ' minutes')::interval)  > ?", ends_at, scheduled_at)
 
     errors.add(:base, "Ce créneau chevauche un rendez-vous existant") if overlapping.exists?
   end

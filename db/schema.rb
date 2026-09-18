@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_072552) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_072137) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -110,6 +110,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_072552) do
 
   create_table "practitioner_profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "bio"
+    t.uuid "cabinet_id"
     t.integer "consultation_price_cents"
     t.datetime "created_at", null: false
     t.string "first_name"
@@ -119,6 +120,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_072552) do
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.boolean "verified", default: false
+    t.index ["cabinet_id"], name: "index_practitioner_profiles_on_cabinet_id"
     t.index ["rpps_number"], name: "index_practitioner_profiles_on_rpps_number", unique: true
     t.index ["user_id"], name: "index_practitioner_profiles_on_user_id", unique: true
   end
@@ -170,6 +172,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_072552) do
   add_foreign_key "availability_exceptions", "practitioner_profiles"
   add_foreign_key "availability_rules", "practitioner_profiles"
   add_foreign_key "patient_profiles", "users"
+  add_foreign_key "practitioner_profiles", "cabinets"
   add_foreign_key "practitioner_profiles", "users"
   add_foreign_key "practitioner_profiles_specialities", "specialities"
 end

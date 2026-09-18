@@ -3,7 +3,7 @@ class PractitionerProfile < ApplicationRecord
   has_many :availability_exceptions, dependent: :destroy
 
   belongs_to :user
-  belongs_to :cabinet
+  belongs_to :cabinet, optional: true
 
   has_many :availability_rules, dependent: :destroy
   has_many :availability_exceptions, dependent: :destroy
@@ -15,7 +15,7 @@ class PractitionerProfile < ApplicationRecord
 
   enum :sector, { sector_1: 0, sector_2: 1, non_conventionne: 2 }
 
-  validates :first_name, :last_name, presence: true, on: :profile_completion
+  validates :first_name, :last_name, :cabinet, presence: true, on: :profile_completion
   validates :rpps_number, presence: true, on: :profile_completion, if: -> { verified? }
 
   def full_name

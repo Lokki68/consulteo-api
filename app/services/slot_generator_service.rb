@@ -54,7 +54,7 @@ class SlotGeneratorService
   end
 
   def default_slot_duration
-    @practitioner_profile.availability_rules.fisrt&.slot_duration_minutes || DEFAULT_SLOT_DURATION
+    @practitioner_profile.availability_rules.first&.slot_duration_minutes || DEFAULT_SLOT_DURATION
   end
 
   def generate_slots_for_range(date, range)
@@ -85,7 +85,7 @@ class SlotGeneratorService
 
   def overlaps_existing_appointment?(slot)
     @existing_appointments.any? do |starts_at, ends_at|
-      slot.start_time < ends_at && slot.ends_time > starts_at
+      slot.start_time < ends_at && slot.end_time > starts_at
     end
   end
 

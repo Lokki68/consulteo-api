@@ -9,7 +9,7 @@ class AvailabilityRule < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :for_day, ->(day) { where(day_of_week: day) }
-  scope :covering_date, ->(date) { where("valid_from <= ? AND (valid_until IS NULL OR valid_until >= ?", date, date) }
+  scope :covering_date, ->(date) { where("valid_from <= ? AND (valid_until IS NULL OR valid_until >= ?)", date, date) }
 
   private
 

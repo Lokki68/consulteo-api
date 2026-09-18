@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       },
       defaults: { format: :json }
 
-      resources :practitioners, only: [] do
+      resources :practitioners, only: [:show, :index] do
         member do
           get :available_slots
         end
