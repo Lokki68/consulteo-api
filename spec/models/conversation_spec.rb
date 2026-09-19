@@ -13,5 +13,9 @@ RSpec.describe Conversation, type: :model do
       expect(conversation).to be_valid
     end
 
+    it 'validates uniqueness of patient_profile_id scoped to practitioner_profile_id' do
+      existing = create(:conversation)
+    end
+
   end
 end
