@@ -29,7 +29,7 @@ gem "devise-jwt", "~> 0.12", require: false
 gem "pundit"
 
 # Background Jobs
-gem "sidekiq", "~> 7.0"
+gem "sidekiq", "~> 8.1"
 gem "sidekiq-cron"
 gem "redis", "~> 5.0"
 
