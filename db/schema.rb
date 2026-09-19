@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_18_072137) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_130748) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -88,6 +88,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_072137) do
     t.index ["latitude", "longitude"], name: "index_cabinets_on_latitude_and_longitude"
   end
 
+  create_table "conversations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "appointment_id"
+    t.datetime "created_at", null: false
+    t.datetime "last_message_at"
+    t.uuid "patient_profile_id", null: false
+    t.uuid "practitioner_profile_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["appointment_id"], name: "index_conversations_on_appointment_id"
+    t.index ["patient_profile_id", "practitioner_profile_id"], name: "index_conversations_on_patient_and_practitioner", unique: true
+    t.index ["patient_profile_id"], name: "index_conversations_on_patient_profile_id"
+    t.index ["practitioner_profile_id"], name: "index_conversations_on_practitioner_profile_id"
+  end
+
+  create_table "messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "content", null: false
+    t.uuid "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "read_at"
+    t.uuid "sender_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id", "created_at"], name: "index_messages_on_conversation_id_and_created_at"
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["read_at"], name: "index_messages_on_read_at"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
+  end
+
   create_table "patient_profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "address"
     t.string "city"
@@ -153,6 +180,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_072137) do
     t.string "jti", null: false
     t.datetime "last_sign_in_at"
     t.string "last_sign_in_ip"
+    t.boolean "online", default: false, null: false
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
@@ -171,6 +199,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_072137) do
   add_foreign_key "availabilities", "practitioner_profiles"
   add_foreign_key "availability_exceptions", "practitioner_profiles"
   add_foreign_key "availability_rules", "practitioner_profiles"
+  add_foreign_key "conversations", "appointments"
+  add_foreign_key "conversations", "patient_profiles"
+  add_foreign_key "conversations", "practitioner_profiles"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "patient_profiles", "users"
   add_foreign_key "practitioner_profiles", "cabinets"
   add_foreign_key "practitioner_profiles", "users"

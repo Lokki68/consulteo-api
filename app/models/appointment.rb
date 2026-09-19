@@ -23,6 +23,10 @@ class Appointment < ApplicationRecord
     scheduled_at + duration.minutes
   end
 
+  def self.between?(patient_profile_id, practitioner_profile_id)
+    exists?(patient_profile_id, practitioner_profile_id)
+  end
+
   private
 
   def no_overlap_for_practitioner

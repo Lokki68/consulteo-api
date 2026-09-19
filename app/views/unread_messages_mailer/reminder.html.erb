@@ -1,0 +1,7 @@
+<p>Bonjour <%= @recipient.full_name %>,</p>
+
+<p>Vous avez un message non lu depuis plus de 24h :</p>
+
+<blockquote><%= @message.body %></blockquote>
+
+<p><%= link_to "Voir la conversation", conversation_url(@conversation) %></p>

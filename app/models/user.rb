@@ -23,7 +23,15 @@ class User < ApplicationRecord
     profile = patient_profile || practitioner_profile
     return false unless profile
 
-  profile.first_name.present? && profile.last_name.present?
+    profile.first_name.present? && profile.last_name.present?
+  end
+
+  def go_online!
+    update_column(:online, true)
+  end
+
+  def go_offline!
+    update_column(:online, false)
   end
 
   private
