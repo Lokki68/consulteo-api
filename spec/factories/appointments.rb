@@ -3,7 +3,7 @@ FactoryBot.define do
     association :practitioner_profile
     association :patient_profile
 
-    scheduled_at { 1.day.from_now.change(hour: 10, min: 0) }
+    sequence(:scheduled_at) { |n| (Date.tomorrow + n.days).change(hour: 10) }
     duration { 30 }
     status { :pending }
     reason { 'Consultation de routine' }
