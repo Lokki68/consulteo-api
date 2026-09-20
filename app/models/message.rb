@@ -9,9 +9,10 @@ class Message < ApplicationRecord
   private
 
   def broadcast_message
-    ActionCable.server.broadcast(
-      "conversation_#{conversation_id}",
-      MessageSerializer.new(self).as_json
+    ConversationChannel.broadcast_to(
+      conversation,
+      type: "message",
+      message: MessageSerializer.new(self).as_json
     )
   end
 end
