@@ -1,7 +1,8 @@
+# spec/support/auth_helpers.rb
 module AuthHelpers
   def auth_headers(user)
-    token = JsonWebToken.encode(user_id: user.id)
-    { 'Authorization': "Bearer #{token}" }
+    token = Warden::JWTAuth::UserEncoder.new.call(user, :api_v1_user, nil).first
+    { 'Authorization' => "Bearer #{token}" }
   end
 end
 

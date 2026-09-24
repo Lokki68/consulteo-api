@@ -49,6 +49,44 @@ RSpec.describe Conversation, type: :model do
         expect(conversation).to be_valid
       end
     end
+
+    context 'must be initiated by patient' do
+      it 'is valid if is initiated by patient' do
+        appointment = create(:appointment)
+        conversation = build(
+          :conversation,
+          patient_profile: appointment.patient_profile,
+          practitioner_profile: appointment.practitioner_profile,
+          initiated_by: :patient
+        )
+
+        expect(conversation).to be_valid
+      end
+
+      it 'is valid if initiated by is not define' do
+        appointment = create(:appointment)
+        conversation = build(
+          :conversation,
+          patient_profile: appointment.patient_profile,
+          practitioner_profile: appointment.practitioner_profile
+        )
+
+        expect(conversation).to be_valid
+      end
+
+      it 'is invalid if intiated_by practitioner' do
+        appointment = create(:appointment)
+        conversation = build(
+          :conversation,
+          patient_profile: appointment.patient_profile,
+          practitioner_profile: appointment.practitioner_profile,
+          initiated_by: :practitioner
+        )
+
+        expect(conversation).not_to be_valid
+        expect(conversation.errors[:base]).to include("Seul un patient peut initier une conversation")
+      end
+    end
   end
 
   describe '.for_user' do

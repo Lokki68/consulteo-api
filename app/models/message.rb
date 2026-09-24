@@ -4,6 +4,8 @@ class Message < ApplicationRecord
 
   validates :content, presence: true
 
+  scope :unread_for, ->(user) { where.not(sender_id: user.id).where(read_at: nil) }
+
   after_create_commit :broadcast_message
 
   private

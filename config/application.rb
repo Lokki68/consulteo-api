@@ -20,7 +20,6 @@ module ConsulteoApi
     config.load_defaults 8.1
     config.autoload_lib(ignore: %w[assets tasks])
 
-
     config.api_only = true
 
     config.session_store :cookie_store, key: "_consulteo_api_v1_session"

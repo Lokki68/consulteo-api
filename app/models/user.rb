@@ -2,8 +2,8 @@ require "devise"
 require "devise/jwt"
 
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  include Devise::JWT::RevocationStrategies::JTIMatcher
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable,
          :jwt_authenticatable, jwt_revocation_strategy: self
@@ -32,6 +32,13 @@ class User < ApplicationRecord
 
   def go_offline!
     update_column(:online, false)
+  end
+
+  def full_name
+    profile = patient_profile || practitioner_profile
+    return "" unless profile
+
+    "#{profile.first_name} #{profile.last_name}".strip
   end
 
   private

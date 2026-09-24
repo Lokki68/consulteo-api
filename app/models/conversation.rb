@@ -1,5 +1,7 @@
 # app/models/conversation.rb
 class Conversation < ApplicationRecord
+  attr_accessor :initiated_by
+
   belongs_to :patient_profile
   belongs_to :practitioner_profile
 
@@ -7,6 +9,7 @@ class Conversation < ApplicationRecord
 
   validates :patient_profile_id, uniqueness: { scope: :practitioner_profile_id }
   validate :patient_must_have_appointment_with_practitioner, on: :create
+  validate :initiator_must_be_patient, on: :create
 
   scope :for_user, ->(user) {
     if user.patient?
@@ -37,5 +40,11 @@ class Conversation < ApplicationRecord
     unless has_appointment
       errors.add(:base, "Une conversation nécessite au moins un rendez-vous préalable avec ce praticien")
     end
+  end
+
+  def initiator_must_be_patient
+    return if initiated_by.nil?
+
+    errors.add(:base, "Seul un patient peut initier une conversation") unless initiated_by.to_sym == :patient
   end
 end
