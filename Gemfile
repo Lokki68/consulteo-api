@@ -33,7 +33,7 @@ gem "pundit"
 # Background Jobs
 gem "sidekiq", "~> 7.0"
 gem "sidekiq-cron"
-gem "redis", "~> 5.0"
+gem "redis", "~> 6.0"
 
 # Chiffrement des données sensibles
 gem "lockbox"
