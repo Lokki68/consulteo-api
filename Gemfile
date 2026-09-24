@@ -21,6 +21,8 @@ gem "thruster", require: false
 
 gem "image_processing", "~> 1.2"
 
+gem "aasm"
+
 # Auth
 gem "devise", "~> 4.9"
 gem "devise-jwt", "~> 0.12"

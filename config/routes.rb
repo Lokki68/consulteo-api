@@ -17,7 +17,14 @@ Rails.application.routes.draw do
         resources :messages, only: %i[index create]
       end
 
-
+      resources :appointments, only: %i[index show create] do
+        member do
+          patch :cancel
+          patch :reschedule
+          patch :payment_status
+          patch :status
+        end
+      end
 
       namespace :profiles do
         resource :patient_profiles, only: %i[show update]

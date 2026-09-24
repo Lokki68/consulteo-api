@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_18_130748) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_24_144259) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -19,16 +19,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_130748) do
 
   create_table "appointments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "cancellation_reason"
+    t.datetime "cancelled_at"
+    t.uuid "cancelled_by_user_id"
+    t.integer "consultation_type", default: 0, null: false
     t.datetime "created_at", null: false
     t.integer "duration", default: 30, null: false
+    t.text "notes"
     t.uuid "patient_profile_id", null: false
+    t.integer "payment_status", default: 0, null: false
     t.uuid "practitioner_profile_id", null: false
+    t.integer "price_cents", default: 0, null: false
     t.text "reason"
+    t.text "reschedule_reason"
     t.datetime "scheduled_at", null: false
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
+    t.index ["cancelled_by_user_id"], name: "index_appointments_on_cancelled_by_user_id"
     t.index ["patient_profile_id", "scheduled_at"], name: "index_appointments_on_patient_profile_id_and_scheduled_at"
     t.index ["patient_profile_id"], name: "index_appointments_on_patient_profile_id"
+    t.index ["payment_status"], name: "index_appointments_on_payment_status"
     t.index ["practitioner_profile_id", "scheduled_at"], name: "index_appointments_on_practitioner_profile_id_and_scheduled_at"
     t.index ["practitioner_profile_id"], name: "index_appointments_on_practitioner_profile_id"
     t.index ["status"], name: "index_appointments_on_status"
@@ -138,6 +147,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_130748) do
   create_table "practitioner_profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "bio"
     t.uuid "cabinet_id"
+    t.integer "cancellation_deadline_hours", default: 24, null: false
     t.integer "consultation_price_cents"
     t.datetime "created_at", null: false
     t.string "first_name"
@@ -196,6 +206,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_130748) do
 
   add_foreign_key "appointments", "patient_profiles"
   add_foreign_key "appointments", "practitioner_profiles"
+  add_foreign_key "appointments", "users", column: "cancelled_by_user_id"
   add_foreign_key "availabilities", "practitioner_profiles"
   add_foreign_key "availability_exceptions", "practitioner_profiles"
   add_foreign_key "availability_rules", "practitioner_profiles"

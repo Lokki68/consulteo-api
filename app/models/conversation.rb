@@ -1,5 +1,7 @@
 # app/models/conversation.rb
 class Conversation < ApplicationRecord
+  include Stateful
+
   attr_accessor :initiated_by
 
   belongs_to :patient_profile
@@ -18,6 +20,24 @@ class Conversation < ApplicationRecord
       joins(:practitioner_profile).where(practitioner_profiles: { user_id: user.id })
     end
   }
+
+  define_state_machine do
+    state :active, initial: true
+    state :archived
+    state :closed
+
+    event :archive do
+      transitions from: :active, to: :archived
+    end
+
+    event :reopen do
+      transitions from: [:archived, :closed], to: :active
+    end
+
+    event :close do
+      transitions from: :active, to: :closed
+    end
+  end
 
   def other_participant(current_user)
     current_user == patient_profile.user ? practitioner_profile.user : patient_profile.user
