@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_24_144259) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_27_093002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -101,11 +101,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_144259) do
     t.uuid "appointment_id"
     t.datetime "created_at", null: false
     t.datetime "last_message_at"
+    t.uuid "last_message_id"
     t.uuid "patient_profile_id", null: false
     t.uuid "practitioner_profile_id", null: false
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["appointment_id"], name: "index_conversations_on_appointment_id"
+    t.index ["last_message_at"], name: "index_conversations_on_last_message_at"
+    t.index ["last_message_id"], name: "index_conversations_on_last_message_id"
     t.index ["patient_profile_id", "practitioner_profile_id"], name: "index_conversations_on_patient_and_practitioner", unique: true
     t.index ["patient_profile_id"], name: "index_conversations_on_patient_profile_id"
     t.index ["practitioner_profile_id"], name: "index_conversations_on_practitioner_profile_id"
@@ -211,6 +214,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_24_144259) do
   add_foreign_key "availability_exceptions", "practitioner_profiles"
   add_foreign_key "availability_rules", "practitioner_profiles"
   add_foreign_key "conversations", "appointments"
+  add_foreign_key "conversations", "messages", column: "last_message_id"
   add_foreign_key "conversations", "patient_profiles"
   add_foreign_key "conversations", "practitioner_profiles"
   add_foreign_key "messages", "conversations"

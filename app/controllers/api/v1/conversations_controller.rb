@@ -9,11 +9,23 @@ module Api
         conversations = Conversation.for_user(current_user)
                                     .includes(:patient_profile, :practitioner_profile)
 
-        render json: { data: ConversationSerializer.new(conversations, current_user).as_json }
+        render json: {
+          data: ConversationSerializer.new(
+            conversations,
+            params: { current_user: current_user }
+          ).as_json
+        }
       end
 
       def show
-        render json: { data: ConversationSerializer.new(@conversation, current_user, detailed: true).as_json }
+        render json: {
+          data: ConversationSerializer.new(
+            @conversation,
+            params: {
+              current_user: current_user
+            }
+          ).as_json
+        }
       end
 
       def create
@@ -27,7 +39,12 @@ module Api
         )
 
         if existing_conversation
-          return render  json: { data: ConversationSerializer.new(existing_conversation, current_user).as_json }
+          return render  json: {
+            data: ConversationSerializer.new(
+            existing_conversation,
+            params: { current_user: current_user }
+            ).as_json
+          }
         end
 
         conversation = Conversation.new(
@@ -37,7 +54,12 @@ module Api
         )
 
         if conversation.save
-          render json: { data: ConversationSerializer.new(conversation, current_user).as_json }, status: :created
+          render json: {
+            data: ConversationSerializer.new(
+              conversation,
+              params: {current_user: current_user}
+            ).as_json
+          }, status: :created
         else
           render json: { errors: conversation.errors.full_messages }, status: :unprocessable_entity
         end

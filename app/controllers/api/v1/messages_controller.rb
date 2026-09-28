@@ -1,6 +1,20 @@
 class Api::V1::MessagesController < ApplicationController
+  include Pagy::Backend
+
   before_action :authenticate_user!
   before_action :set_conversation
+
+  def index
+    pagy, messages = pagy(
+      @conversation.messages.order(created_at: :desc),
+      items: params[:per_page] || 30
+    )
+
+    render json: {
+      data: MessageSerializer.new(messages.reverse).as_json,
+      meta: pagy_metadata(pagy)
+    }
+  end
 
   def create
     message = @conversation.messages.new(message_params.merge(sender: current_user))

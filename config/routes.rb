@@ -14,7 +14,11 @@ Rails.application.routes.draw do
       end
 
       resources :conversations, only: %i[index show create] do
-        resources :messages, only: %i[index create]
+        resources :messages, only: %i[index create] do
+          collection do
+            patch :mark_as_read
+          end
+        end
       end
 
       resources :appointments, only: %i[index show create] do

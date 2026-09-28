@@ -8,12 +8,12 @@ class Appointment < ApplicationRecord
   has_one :consultation, dependent: :destroy
 
   enum :consultation_type, { in_person: 0, video: 1, phone: 2 }
-
   enum :payment_status, { unpaid: 0, paid: 1, refunded: 2, partially_paid: 3 }
 
   validates :scheduled_at, presence: true
   validates :duration, presence: true, numericality: { greater_than: 0 }
   validates :price_cents, presence: true, numericality: { greater_than_or_equal_to: 0 }
+
   validate :no_overlap_for_practitioner, on: :create
   validate :no_overlap_for_practitioner, if: :scheduled_at_changed?, on: :update
 

@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include ActionController::MimeResponds
   include Devise::Controllers::Helpers
+  include Pagy::Backend
 
   respond_to :json
 
