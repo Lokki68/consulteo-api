@@ -5,8 +5,9 @@ FactoryBot.define do
 
     sequence(:scheduled_at) { |n| (Date.tomorrow + n.days).change(hour: 10) }
     duration { 30 }
-    status { :pending }
     reason { 'Consultation de routine' }
+    price_cents { 5000 }
+    consultation_type { :in_person }
 
     trait :cancelled do
       status { :cancelled }

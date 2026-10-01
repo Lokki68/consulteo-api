@@ -7,7 +7,7 @@ module Stateful
 
   class_methods do
     def define_state_machine(&block)
-      aasm(column: :status, enum: true, &block)
+      aasm(column: :status, &block)
     end
   end
 end

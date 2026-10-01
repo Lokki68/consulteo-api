@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_27_093002) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_29_070908) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gist"
   enable_extension "pg_catalog.plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_093002) do
     t.text "reason"
     t.text "reschedule_reason"
     t.datetime "scheduled_at", null: false
-    t.integer "status", default: 0, null: false
+    t.string "status", default: "pending", null: false
     t.datetime "updated_at", null: false
     t.index ["cancelled_by_user_id"], name: "index_appointments_on_cancelled_by_user_id"
     t.index ["patient_profile_id", "scheduled_at"], name: "index_appointments_on_patient_profile_id_and_scheduled_at"
@@ -40,7 +40,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_27_093002) do
     t.index ["payment_status"], name: "index_appointments_on_payment_status"
     t.index ["practitioner_profile_id", "scheduled_at"], name: "index_appointments_on_practitioner_profile_id_and_scheduled_at"
     t.index ["practitioner_profile_id"], name: "index_appointments_on_practitioner_profile_id"
-    t.index ["status"], name: "index_appointments_on_status"
   end
 
   create_table "availabilities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
