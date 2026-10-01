@@ -81,6 +81,9 @@ GEM
     annotate (2.6.5)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
+    apipie-rails (1.5.1)
+      actionpack (>= 5.0)
+      activesupport (>= 5.0)
     argon2 (2.3.3)
       ffi (~> 1.15)
       ffi-compiler (~> 1.0)
@@ -449,6 +452,7 @@ DEPENDENCIES
   aasm
   alba
   annotate
+  apipie-rails
   blind_index
   bootsnap
   brakeman
@@ -497,6 +501,7 @@ CHECKSUMS
   activesupport (8.1.3.1) sha256=85458765f25ea48b9019c46b6bb3fa5683197bf4280d9f06710a6e8d7a831376
   alba (4.0.0) sha256=7cc35b520e51f9532e930b75af2a7915bfae48077221d858f122fc7e27e96572
   annotate (2.6.5) sha256=14dc2adae397080ee14bf6e3fd6f1d8de81aa1d28c4ca670e734d11bf6b97d26
+  apipie-rails (1.5.1) sha256=727c2a74d913cd0cb601d3675800672b7b5a6b0c61349805c0582431a12f2f45
   argon2 (2.3.3) sha256=535276457cabf71940f21ac31b49b9d3b0d0a4640fe9db2b46b9677e2838453d
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   base64 (0.3.0) sha256=27337aeabad6ffae05c265c450490628ef3ebd4b67be58257393227588f5a97b

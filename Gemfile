@@ -23,6 +23,8 @@ gem "image_processing", "~> 1.2"
 
 gem "aasm"
 
+gem "apipie-rails"
+
 # Auth
 gem "devise", "~> 4.9"
 gem "devise-jwt", "~> 0.12"

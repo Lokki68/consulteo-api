@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Apipie::Engine => '/api/documentation'
+
   namespace :api do
     namespace :v1 do
       devise_for :users, path: "auth", controllers: {
