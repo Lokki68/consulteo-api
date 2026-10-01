@@ -4,16 +4,15 @@ module Api
     class ConversationsController < ApplicationController
       before_action :authenticate_user!
       before_action :set_conversation, only: [:show]
+      before_action :authorize_patient!, only: [:create]
 
       def index
-        conversations = Conversation.for_user(current_user)
+        conversations = current_user.conversations
                                     .includes(:patient_profile, :practitioner_profile)
+                                    .order(updated_at: :desc)
 
         render json: {
-          data: ConversationSerializer.new(
-            conversations,
-            params: { current_user: current_user }
-          ).as_json
+          data: ConversationSerializer.new(conversations).as_json
         }
       end
 
@@ -29,46 +28,61 @@ module Api
       end
 
       def create
-        unless current_user.patient?
-          return render json: { errors: ['Seul un patient peut initier une conversation'] }, status: :forbidden
-        end
+        existing_conversation = find_or_create_conversation
+        status_code = existing_conversation.newly_created? ? :created : :ok
 
-        existing_conversation = Conversation.find_by(
-          patient_profile_id: current_user.patient_profile.id,
-          practitioner_profile_id: params[:practitioner_profile_id]
-        )
-
-        if existing_conversation
-          return render  json: {
-            data: ConversationSerializer.new(
+        render json: {
+          data: ConversationSerializer.new(
             existing_conversation,
             params: { current_user: current_user }
-            ).as_json
-          }
-        end
-
-        conversation = Conversation.new(
-          patient_profile: current_user.patient_profile,
-          practitioner_profile_id: params[:practitioner_profile_id],
-          initiated_by: :patient
-        )
-
-        if conversation.save
-          render json: {
-            data: ConversationSerializer.new(
-              conversation,
-              params: {current_user: current_user}
-            ).as_json
-          }, status: :created
-        else
-          render json: { errors: conversation.errors.full_messages }, status: :unprocessable_entity
-        end
+          ).as_json,
+          message: "Conversation #{status_code == :created ? 'created' : 'retrieved' } successfully"
+        }, status: status_code
       end
 
       private
 
+      def authorize_patient!
+        render json: {
+          errors: ['Seul un patient peu initier une conversation']
+        }, status: :forbidden unless current_user.patient?
+      end
+
+      def find_or_create_conversation
+        conversation = Conversation.find_by(
+          patient_profile_id: current_user.patient_profile.id,
+          practitioner_profile_id: conversation_params[:practitioner_profile_id]
+        )
+
+        return conversation if conversation.present?
+
+        create_conversation
+      end
+
+      def create_conversation
+        conversation = current_user.patient_profile.conversatoins.build(
+          practitioner_profile_id: conversation_params[:practitioner_profile_id],
+          initiated_by: :patient
+        )
+
+        if conversation.save
+          conversation
+        else
+          render json: {
+            errors: conversation.errors.full_messages
+          }, status: :unprocessable_entity
+          nil
+        end
+      end
+
       def set_conversation
         @conversation = Conversation.for_user(current_user).find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render json: { errors: 'Conversaton not found' }, status: :not_found
+      end
+
+      def conversation_params
+        params.require(:conversation).permit(:practitioner_profile_id)
       end
     end
   end

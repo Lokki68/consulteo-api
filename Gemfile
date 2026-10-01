@@ -23,7 +23,10 @@ gem "image_processing", "~> 1.2"
 
 gem "aasm"
 
-gem "apipie-rails"
+gem 'rswag', '~> 2.13'
+gem 'rswag-api'
+gem 'rswag-ui'
+gem 'rswag-specs', group: :test
 
 # Auth
 gem "devise", "~> 4.9"

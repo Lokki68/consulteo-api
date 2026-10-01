@@ -2,15 +2,28 @@
 class Api::V1::Profiles::PatientProfilesController < ApplicationController
   before_action :authenticat_user!
 
+
+  def show
+    profile = current_user.patient_profile
+
+    render json: {
+      data: PatientProfileSerializer.new(profile).as_json
+    }
+
+  rescue ActiveRecord::RecordNotFound
+    render json: {
+      error: 'Profile not found'
+    }, status: :not_found
+  end
+
   def update
     profile = current_user.patient_profile
-    profile.assign_attributes(patient_profile_params)
 
-    if profile.save(context: :profile_completion)
+    if profile.update(patient_profile_params)
       render json: {
-        status: { code: 200, message: "Profile complété avec succès." },
-        data: PatientProfileSerializer.render(profile)
-      }, status: :ok
+        data: PatientProfileSerializer.new(profile).as_json,
+        message: 'Profile updated successfully'
+      }
     else
       render json: {
         errors: profile.errors.full_messages

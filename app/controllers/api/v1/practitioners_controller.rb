@@ -3,8 +3,19 @@ module Api
     class PractitionersController < ApplicationController
       before_action :set_practitioner, only: %i[show available_slots]
 
+      def index
+        practitioners = PractitionerProfile.includes(:user)
+                                           .order(:id)
+
+        render json: {
+          data: PractitionerProfileSerializer.new(practitioners).as_json
+        }
+      end
+
       def show
-        render json: @practitioner_profile, serializer: PractitionerProfileSerializer
+        render json: {
+          data: PractitionerProfileSerializer.new(@practitioner_profile).as_json
+        }
       end
 
       def available_slots
@@ -19,7 +30,9 @@ module Api
           to_date: to_date
         ).call
 
-        render json: AvailableSlotsSerializer.new(slots).as_json, status: :ok
+        render json: {
+          data: AvailableSlotsSerializer.new(slots).as_json
+        }, status: :ok
       rescue ArgumentError => e
         render json: { error: e.message }, status: :unprocessable_entity
       end
