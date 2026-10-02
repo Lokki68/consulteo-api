@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: consulteo_db
+    environment:
+      POSTGRES_DB: consulteo_development
+      POSTGRES_USER: consulteo_user
+      POSTGRES_PASSWORD: secure_password_change_me
+      TZ: UTC
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -u consulteo_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: consulteo_api
+    command: bundle exec rails s -b 0.0.0.0
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://consulteo_user:secure_password_change_me@db:5432/consulteo_development
+      REDIS_URL: redis://redis:6379/0
+      RAILS_LOG_TO_STDOUT: 'true'
+      JWT_SECRET_KEY: your_secret_key_change_me
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+  volumes:
+    postgres_data:
+    redis_data:
+    bundle_cache:
